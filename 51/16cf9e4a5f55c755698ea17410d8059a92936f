@@ -1,0 +1,21 @@
+.gitignore
+  s_16dae640dbb8fe::t_bb72b230241deb 1
+Cargo.lock
+  s_16dae640dbb8fe::t_e659f346433472 1-7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "5116cf9e4a5f55c755698ea17410d8059a92936f",
+  "prompts": {},
+  "sessions": {
+    "s_16dae640dbb8fe": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_074fc4cb5ffeq1N1zN1prJhTjX",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Guy Bedford <guybedford@gmail.com>"
+    }
+  }
+}
