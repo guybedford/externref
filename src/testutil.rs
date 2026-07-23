@@ -8,7 +8,10 @@ crate::em_js_data!(
     __em_js__test_make_ref,
     "()<::>{ return { hello: 'externref', life: 42 }; }"
 );
-crate::em_js_data!(__em_js__test_refs_eq, "(a, b)<::>{ return a === b ? 1 : 0; }");
+crate::em_js_data!(
+    __em_js__test_refs_eq,
+    "(a, b)<::>{ return a === b ? 1 : 0; }"
+);
 crate::em_js_data!(
     __em_js__test_ref_json,
     "(v, outLen)<::>{ const bytes = new TextEncoder().encode(JSON.stringify(v)); const ptr = _malloc(bytes.length); HEAPU8.set(bytes, ptr); HEAPU32[outLen >>> 2] = bytes.length; return ptr; }"

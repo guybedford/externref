@@ -70,10 +70,15 @@ crate::em_js_data!(
     __em_js__ref_to_string,
     "(v, outLen)<::>{ const bytes = new TextEncoder().encode(String(v)); const ptr = _malloc(bytes.length); HEAPU8.set(bytes, ptr); HEAPU32[outLen >>> 2] = bytes.length; return ptr; }"
 );
+crate::em_js_data!(
+    __em_js__ref_is,
+    "(a, b)<::>{ return Object.is(a, b) ? 1 : 0; }"
+);
 
 #[link(wasm_import_module = "env")]
 unsafe extern "C" {
     fn ref_to_string(v: externref, out_len: *mut usize) -> *mut u8;
+    fn ref_is(a: externref, b: externref) -> i32;
 }
 
 unsafe extern "C" {
@@ -123,6 +128,17 @@ impl Drop for Externref {
         STATE.lock().unwrap().0.push(self.0);
     }
 }
+
+/// `Object.is` semantics: referent identity for objects, `NaN == NaN`,
+/// `+0 != -0`. Reflexive (unlike JS `===`), so `Eq` is lawful.
+impl PartialEq for Externref {
+    fn eq(&self, other: &Self) -> bool {
+        std::hint::black_box(&__em_js__ref_is);
+        unsafe { ref_is(self.as_raw(), other.as_raw()) == 1 }
+    }
+}
+
+impl Eq for Externref {}
 
 impl fmt::Debug for Externref {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

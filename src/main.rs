@@ -14,5 +14,8 @@ fn main() {
     let owned = Externref::from_raw(raw);
     let clone = owned.clone();
     println!("owned debug: {:?}", owned);
-    println!("clone same referent: {}", refs_eq(owned.as_raw(), clone.as_raw()));
+    println!(
+        "clone same referent: {}",
+        refs_eq(owned.as_raw(), clone.as_raw())
+    );
 }

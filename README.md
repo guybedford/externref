@@ -16,8 +16,9 @@ This crate layers on top:
 * **`Externref`** — the owned, storable form: a slot in a wasm-native
   externref table declared via `global_asm!` (`feature(asm_experimental_arch)`),
   with single-instruction `table.get`/`table.set` accessors, a free-listed
-  allocator in linear memory, `Clone`/`Drop` slot management, and `Debug` via
-  JS `String()`. `from_raw`/`as_raw` are the only crossings to the bare lang
+  allocator in linear memory, `Clone`/`Drop` slot management,
+  `PartialEq`/`Eq` with `Object.is` semantics, and `Debug` via JS
+  `String()`. `from_raw`/`as_raw` are the only crossings to the bare lang
   type.
 * **`ref_roundtrip`** — an exported function taking and returning `externref`,
   callable from JS directly on the wasm export.

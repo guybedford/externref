@@ -37,6 +37,20 @@ fn externref_clone_shares_referent() {
 }
 
 #[test]
+fn externref_eq() {
+    let a = Externref::from_raw(make_ref());
+    let b = a.clone();
+    assert_eq!(a, b);
+
+    let c = Externref::from_raw(make_ref());
+    assert_ne!(a, c);
+
+    // same referent through separate from_raw calls (distinct slots)
+    let raw = make_ref();
+    assert_eq!(Externref::from_raw(raw), Externref::from_raw(raw));
+}
+
+#[test]
 fn externref_debug() {
     let a = Externref::from_raw(make_ref());
     assert_eq!(format!("{a:?}"), "[object Object]");
@@ -60,7 +74,9 @@ fn externref_storable() {
     struct Holder {
         r: Externref,
     }
-    let h = Holder { r: Externref::from_raw(make_ref()) };
+    let h = Holder {
+        r: Externref::from_raw(make_ref()),
+    };
     let v = vec![h.r.clone(), h.r.clone()];
     assert!(refs_eq(v[0].as_raw(), v[1].as_raw()));
 }
