@@ -1,8 +1,8 @@
 # externref_t
 
 Prototype of a real wasm `externref` lang type for Rust on
-`wasm32-unknown-emscripten`, then extending that with an addressible
-first class `Externref` wrapper using `global_asm!` operations for the
+`wasm32-unknown-emscripten`, then extending that with an addressable
+first-class `Externref` wrapper using `global_asm!` operations for the
 externref storage and retrieval.
 
 ## Setup
@@ -24,6 +24,8 @@ rustup toolchain link externref-stage1 build/host/stage1
 ## Example
 
 ```rust
+#![feature(wasm_externref)]
+
 use core::arch::wasm32::externref;
 use externref_t::Externref;
 
@@ -33,19 +35,19 @@ unsafe extern "C" {
 }
 
 fn get_document() -> Externref {
-  Externref::from_raw(get_document_raw())
+    Externref::from_raw(unsafe { get_document_raw() })
 }
 
-pub fn main () {
-  let docs = Vec::new();
-  let doc = get_document();
+pub fn main() {
+    let mut docs = Vec::new();
+    let doc = get_document();
 
-  // can clone Externref and use in generic types
-  docs.push(doc.clone());
+    // can clone Externref and use in generic types
+    docs.push(doc.clone());
 }
 ```
 
-## Running th Tests
+## Running the Tests
 
 ```sh
 cargo run    # minimal example
