@@ -1,30 +1,9 @@
 # externref_t
 
 Prototype of a real wasm `externref` lang type for Rust on
-`wasm32-unknown-emscripten`.
-
-The rustc fork adds `core::arch::wasm32::externref` behind
-`feature(wasm_externref)`: an opaque host reference lowering to a true wasm
-reference type in `extern "C"` signatures. Following clang's `__externref_t`
-semantics, it is a bare-position-only type — legal only as a top-level
-function parameter, return value or local — so JS values cross the boundary
-directly and identity-preserved, with no handle tables or refcounting at the
-FFI layer, and no possibility of a reference entering linear memory.
-
-This crate layers on top:
-
-* **`Externref`** — the owned, storable form: a slot in a wasm-native
-  externref table declared via `global_asm!` (`feature(asm_experimental_arch)`),
-  with single-instruction `table.get`/`table.set` accessors, a free-listed
-  allocator in linear memory, `Clone`/`Drop` slot management,
-  `PartialEq`/`Eq` with `Object.is` semantics, and `Debug` via JS
-  `String()`. `from_raw`/`as_raw` are the only crossings to the bare lang
-  type.
-* **`ref_roundtrip`** — an exported function taking and returning `externref`,
-  callable from JS directly on the wasm export.
-* **`em_js_data!`** — emscripten `EM_JS` authored from Rust: emits the
-  `__em_js__` data symbols that emcc extracts at link time to generate JS
-  imports, used here for the test utilities (`testutil`).
+`wasm32-unknown-emscripten`, then extending that with an addressible
+first class `Externref` wrapper using `global_asm!` operations for the
+externref storage and retrieval.
 
 ## Setup
 
@@ -42,7 +21,31 @@ rustup toolchain link externref-stage1 build/host/stage1
 `rust-toolchain.toml` pins this project to `externref-stage1`, and
 `.cargo/config.toml` targets `wasm32-unknown-emscripten` with a `node` runner.
 
-## Running
+## Example
+
+```rust
+use core::arch::wasm32::externref;
+use externref_t::Externref;
+
+#[link(wasm_import_module = "env")]
+unsafe extern "C" {
+    fn get_document_raw() -> externref;
+}
+
+fn get_document() -> Externref {
+  Externref::from_raw(get_document_raw())
+}
+
+pub fn main () {
+  let docs = Vec::new();
+  let doc = get_document();
+
+  // can clone Externref and use in generic types
+  docs.push(doc.clone());
+}
+```
+
+## Running th Tests
 
 ```sh
 cargo run    # minimal example
