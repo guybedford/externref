@@ -1,0 +1,17 @@
+[package]
+name = "externref_t"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+# EM_JS data symbols require rlib linkage: compiling the lib as a test
+# binary internalizes them, dropping the exports emscripten keys on.
+test = false
+doctest = false
+
+[[bin]]
+name = "externref_t"
+path = "src/main.rs"
+test = false
+
+[dependencies]

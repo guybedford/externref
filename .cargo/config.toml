@@ -1,0 +1,9 @@
+[target.wasm32-unknown-emscripten]
+runner = "node"
+rustflags = [
+  "-Clink-self-contained=no",
+  "-Clink-arg=-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_ref_roundtrip",
+]
+
+[build]
+target = "wasm32-unknown-emscripten"
