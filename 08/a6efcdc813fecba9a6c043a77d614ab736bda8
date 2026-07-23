@@ -1,0 +1,25 @@
+src/asmtable.rs
+  s_16dae640dbb8fe::t_80e6b94d4db129 73-76,81,132-142
+src/main.rs
+  s_16dae640dbb8fe::t_a54f816178a4a3 17-20
+src/testutil.rs
+  s_16dae640dbb8fe::t_3992d026e03704 11-14
+tests/e2e.rs
+  s_16dae640dbb8fe::t_19720c2edb6470 39-52,77-79
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "08a6efcdc813fecba9a6c043a77d614ab736bda8",
+  "prompts": {},
+  "sessions": {
+    "s_16dae640dbb8fe": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_074fc4cb5ffeq1N1zN1prJhTjX",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Guy Bedford <guybedford@gmail.com>"
+    }
+  }
+}
